@@ -11,8 +11,11 @@ import Orders from './pages/Orders.jsx';
 import AdminProducts from './pages/admin/AdminProducts.jsx';
 import AdminOrders from './pages/admin/AdminOrders.jsx';
 import NotFound from './pages/NotFound.jsx';
+import { useCart } from './context/CartContext.jsx';
 
 export default function App() {
+  const { toasts } = useCart();
+
   return (
     <>
       <Navbar />
@@ -35,6 +38,23 @@ export default function App() {
         </Routes>
       </main>
       <footer className="footer">© {new Date().getFullYear()} ShopSphere · Open-source student project</footer>
+
+      <div className="toast-container" aria-live="polite">
+        {toasts.map((toast) => (
+          <div key={toast.id} className="toast">
+            <img src={toast.image} alt={toast.name} className="toast-thumb" />
+            <div className="toast-copy">
+              <span className="toast-badge">Added</span>
+              <strong>{toast.name}</strong>
+              <small>
+                {toast.previousQty === 0
+                  ? `Added: ${toast.newQty} total`
+                  : `Was ${toast.previousQty}, now ${toast.newQty}`}
+              </small>
+            </div>
+          </div>
+        ))}
+      </div>
     </>
   );
 }
