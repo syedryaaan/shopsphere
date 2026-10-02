@@ -35,7 +35,7 @@ export default function Navbar() {
       </Link>
       <nav className="nav-links">
         <NavLink to="/">Shop</NavLink>
-        <NavLink to="/cart">Cart ({totalItems})</NavLink>
+        {user && <NavLink to="/cart">Cart ({totalItems})</NavLink>}
         {user && <NavLink to="/wishlist">Wishlist</NavLink>}
         {user && <NavLink to="/orders">My Orders</NavLink>}
         {isAdmin && <NavLink to="/admin/products">Admin</NavLink>}

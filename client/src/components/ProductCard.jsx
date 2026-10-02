@@ -57,21 +57,23 @@ export default function ProductCard({ product }) {
 
   return (
     <article className="card product-card">
-      <div className="wishlist-button-wrap">
-        <button
-          type="button"
-          className={`wishlist-btn ${isWishlisted ? 'active' : ''}`}
-          onClick={toggleWishlist}
-          disabled={wishlistPending}
-          aria-label={
-            isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'
-          }
-          title={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-        >
-          {isWishlisted ? '♥' : '♡'}
-        </button>
-        {wishlistError && <span className="error wishlist-error" role="status">{wishlistError}</span>}
-      </div>
+      {user && (
+        <div className="wishlist-button-wrap">
+          <button
+            type="button"
+            className={`wishlist-btn ${isWishlisted ? 'active' : ''}`}
+            onClick={toggleWishlist}
+            disabled={wishlistPending}
+            aria-label={
+              isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'
+            }
+            title={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          >
+            {isWishlisted ? '♥' : '♡'}
+          </button>
+          {wishlistError && <span className="error wishlist-error" role="status">{wishlistError}</span>}
+        </div>
+      )}
 
       <Link to={`/product/${product._id}`}>
         <img src={product.image} alt={product.name} />
