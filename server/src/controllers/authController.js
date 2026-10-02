@@ -64,13 +64,13 @@ export const forgotPassword = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    res.status(404);
-    throw new Error('User not found');
+    // Never reveal whether an email exists in the response
+    return res.status(200).json({ message: 'If an account exists, a password reset link has been sent to your email.' });
   }
 
   const resetToken = crypto.randomBytes(32).toString('hex');
   user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-  user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+  user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 minutes
 
   await user.save();
 
@@ -93,7 +93,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
       text: `You requested a password reset. Please go to this link to reset your password: \n\n ${resetUrl}`
     });
 
-    res.status(200).json({ message: 'Email sent' });
+    res.status(200).json({ message: 'If an account exists, a password reset link has been sent to your email.' });
   } catch (err) {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
