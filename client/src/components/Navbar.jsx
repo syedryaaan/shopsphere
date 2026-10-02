@@ -19,7 +19,10 @@ export default function Navbar() {
       </Link>
       <nav className="nav-links">
         <NavLink to="/">Shop</NavLink>
-        <NavLink to="/cart">Cart ({totalItems})</NavLink>
+        <NavLink to="/cart" className="cart-link">
+          <span>Cart</span>
+          {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
+        </NavLink>
         {user && <NavLink to="/orders">My Orders</NavLink>}
         {isAdmin && <NavLink to="/admin/products">Admin</NavLink>}
         {user ? (

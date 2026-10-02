@@ -34,6 +34,16 @@ img { max-width: 100%; display: block; }
 .nav-links a { color: var(--text); }
 .nav-links a.active { color: var(--primary); font-weight: 600; }
 
+.cart-link {
+  display: inline-flex; align-items: center; gap: 8px; position: relative;
+}
+
+.cart-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+  background: var(--primary); color: #fff; font-size: 0.72rem; font-weight: 700;
+  line-height: 1; box-shadow: 0 6px 12px rgba(91, 60, 196, 0.25);
+}
 .btn {
   display: inline-block; padding: 9px 16px; border: none; border-radius: var(--radius);
   background: var(--primary); color: #fff !important; cursor: pointer; font-size: 0.95rem;
@@ -101,41 +111,69 @@ textarea { min-height: 80px; }
 .footer { text-align: center; color: var(--muted); padding: 24px; border-top: 1px solid var(--border); }
 
 .toast-container {
-  position: fixed; right: 20px; bottom: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 100;
+  position: fixed; right: 20px; top: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 100;
 }
 
 .toast {
-  display: flex; align-items: center; gap: 12px; min-width: 260px; max-width: 350px;
-  padding: 12px 14px; border-radius: 14px; border-left: 5px solid #ffe082;
-  background: linear-gradient(135deg, rgba(27, 31, 59, 0.96), rgba(42, 65, 128, 0.96));
-  color: #fff; box-shadow: 0 18px 30px rgba(15, 23, 42, 0.22);
-  animation: toast-in 0.22s ease;
+  position: relative; display: flex; align-items: center; gap: 12px; min-width: 290px; max-width: 380px;
+  padding: 12px 16px 12px 12px; border-radius: 16px; overflow: hidden;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.9));
+  color: #f8fafc; box-shadow: 0 20px 40px rgba(15, 23, 42, 0.28);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  backdrop-filter: blur(10px);
+  animation: toast-in 0.24s ease;
+}
+
+.toast-progress {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: linear-gradient(90deg, #34d399, #60a5fa, #a78bfa);
+  animation: toast-progress 2.4s linear forwards;
+}
+
+.toast-icon {
+  width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(52, 211, 153, 0.14); color: #6ee7b7; font-size: 0.82rem; font-weight: 700;
+  flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(110, 231, 183, 0.25);
 }
 
 .toast-thumb {
-  width: 46px; height: 46px; object-fit: cover; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+  width: 46px; height: 46px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12);
+  flex-shrink: 0; background: #0f172a;
 }
 
 .toast-copy {
-  display: flex; flex-direction: column; gap: 3px; min-width: 0;
+  display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; padding-right: 18px;
 }
 
 .toast-copy strong {
-  font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  color: #fff; letter-spacing: -0.01em;
 }
 
 .toast-copy small {
-  opacity: 0.8; font-size: 0.72rem;
+  opacity: 0.8; font-size: 0.72rem; color: #dbeafe;
 }
 
 .toast-badge {
-  align-self: flex-start; background: rgba(255, 224, 130, 0.18); color: #ffe082; border: 1px solid rgba(255, 224, 130, 0.4);
-  border-radius: 999px; padding: 2px 8px; font-size: 0.65rem; letter-spacing: 0.05em; text-transform: uppercase;
+  align-self: flex-start; background: rgba(96, 165, 250, 0.12); color: #bfdbfe; border: 1px solid rgba(147, 197, 253, 0.3);
+  border-radius: 999px; padding: 2px 8px; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;
 }
 
+.toast-close {
+  position: absolute; right: 9px; top: 9px; width: 20px; height: 20px; border: none; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.8); cursor: pointer;
+  font-size: 0.95rem; line-height: 1; display: grid; place-items: center; transition: background 0.2s ease;
+}
+
+.toast-close:hover { background: rgba(255, 255, 255, 0.14); }
+
 @keyframes toast-in {
-  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  from { opacity: 0; transform: translateY(-10px) scale(0.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes toast-progress {
+  from { width: 100%; }
+  to { width: 0%; }
 }
 
 /* TODO: the layout breaks on small screens (<600px) - see "Mobile responsive" issue */

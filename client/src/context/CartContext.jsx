@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 const CartContext = createContext(null);
 const STORAGE_KEY = 'shopsphere_cart';
@@ -10,28 +10,37 @@ export function CartProvider({ children }) {
     const stored = localStorage.getItem(STORAGE_KEY);
     return stored ? JSON.parse(stored) : [];
   });
-  const [toasts, setToasts] = useState([]);
+  const [toast, setToast] = useState(null);
+  const itemsRef = useRef(items);
 
   useEffect(() => {
+    itemsRef.current = items;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }, [items]);
 
+  const removeToast = () => {
+    setToast(null);
+  };
+
   const showToast = (product, quantity = 1, previousQty = 0, newQty = quantity) => {
     const id = Date.now() + Math.random();
-    setToasts((prev) => [...prev, { id, name: product.name, image: product.image, quantity, previousQty, newQty }]);
+    setToast({ id, name: product.name, image: product.image, quantity, previousQty, newQty });
 
     window.setTimeout(() => {
-      setToasts((prev) => prev.filter((toast) => toast.id !== id));
+      setToast((prev) => (prev && prev.id === id ? null : prev));
     }, 2400);
   };
 
   const addToCart = (product, quantity = 1) => {
-    const existing = items.find((i) => i.product === product._id);
+    const currentItems = itemsRef.current;
+    const existing = currentItems.find((i) => i.product === product._id);
     const previousQty = existing ? existing.quantity : 0;
-    const newQty = previousQty + quantity;
+    const nextQty = previousQty + quantity;
 
     setItems((prev) => {
-      if (existing) {
+      const findExisting = prev.find((i) => i.product === product._id);
+
+      if (findExisting) {
         return prev.map((i) =>
           i.product === product._id ? { ...i, quantity: i.quantity + quantity } : i
         );
@@ -43,7 +52,7 @@ export function CartProvider({ children }) {
       ];
     });
 
-    showToast(product, quantity, previousQty, newQty);
+    showToast(product, quantity, previousQty, nextQty);
   };
 
   const updateQuantity = (productId, quantity) => {
@@ -61,7 +70,7 @@ export function CartProvider({ children }) {
 
   return (
     <CartContext.Provider
-      value={{ items, addToCart, updateQuantity, removeFromCart, clearCart, totalItems, totalPrice, toasts, showToast }}
+      value={{ items, addToCart, updateQuantity, removeFromCart, clearCart, totalItems, totalPrice, toast, showToast, removeToast }}
     >
       {children}
     </CartContext.Provider>

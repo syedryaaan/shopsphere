@@ -14,7 +14,7 @@ import NotFound from './pages/NotFound.jsx';
 import { useCart } from './context/CartContext.jsx';
 
 export default function App() {
-  const { toasts } = useCart();
+  const { toast, removeToast } = useCart();
 
   return (
     <>
@@ -39,22 +39,23 @@ export default function App() {
       </main>
       <footer className="footer">© {new Date().getFullYear()} ShopSphere · Open-source student project</footer>
 
-      <div className="toast-container" aria-live="polite">
-        {toasts.map((toast) => (
-          <div key={toast.id} className="toast">
+      {toast && (
+        <div className="toast-container" aria-live="polite">
+          <div className="toast">
+            <button className="toast-close" aria-label="Close notification" onClick={removeToast}>
+              ×
+            </button>
+            <div className="toast-icon">✓</div>
             <img src={toast.image} alt={toast.name} className="toast-thumb" />
             <div className="toast-copy">
               <span className="toast-badge">Added</span>
               <strong>{toast.name}</strong>
-              <small>
-                {toast.previousQty === 0
-                  ? `Added: ${toast.newQty} total`
-                  : `Was ${toast.previousQty}, now ${toast.newQty}`}
-              </small>
+              <small>{toast.newQty} items in cart</small>
             </div>
+            <div className="toast-progress" />
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </>
   );
 }
