@@ -32,10 +32,24 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const updateUser = (nextUser) => {
+    setUser((currentUser) => {
+      const updated =
+        typeof nextUser === 'function'
+          ? nextUser(currentUser)
+          : nextUser;
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+
+      return updated;
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, isAdmin: user?.role === 'admin' }}>
+    <AuthContext.Provider value={{ user, login, register, logout, updateUser, isAdmin: user?.role === 'admin' }}>
       {children}
     </AuthContext.Provider>
+    
   );
 }
 

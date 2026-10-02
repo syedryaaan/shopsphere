@@ -7,6 +7,7 @@ const userResponse = (user) => ({
   name: user.name,
   email: user.email,
   role: user.role,
+  wishlist: (user.wishlist || []).map((id) => id.toString()),
   address: user.address,
   token: generateToken(user._id),
 });

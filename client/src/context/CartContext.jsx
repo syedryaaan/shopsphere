@@ -3,16 +3,31 @@ import { createContext, useContext, useEffect, useState } from 'react';
 const CartContext = createContext(null);
 const STORAGE_KEY = 'shopsphere_cart';
 
+const readStoredItems = () => {
+  if (typeof window === 'undefined') return [];
+
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    const parsed = stored ? JSON.parse(stored) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
 // The cart lives only in localStorage for now.
 // See issue: "Persist cart on the server for logged-in users".
 export function CartProvider({ children }) {
-  const [items, setItems] = useState(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
-  });
+  const [items, setItems] = useState(readStoredItems);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    if (typeof window === 'undefined') return;
+
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {
+      // Ignore storage write failures.
+    }
   }, [items]);
 
   const addToCart = (product, quantity = 1) => {

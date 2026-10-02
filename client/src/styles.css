@@ -63,6 +63,23 @@ img { max-width: 100%; display: block; }
 .btn-ghost { background: transparent; color: var(--primary) !important; border: 1px solid var(--border); }
 .btn-ghost:hover { background: var(--bg); }
 .btn-danger { background: var(--danger); }
+.product-card { position: relative; }
+.wishlist-button-wrap {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+}
+.wishlist-btn {
+  width: 36px; height: 36px; border: none; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9); color: var(--primary); cursor: pointer;
+  font-size: 1.3rem; line-height: 1; display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+.wishlist-btn.active { background: rgba(216, 59, 95, 0.12); color: var(--danger); }
+.wishlist-error {
+  display: block; width: max-content; max-width: min(260px, calc(100vw - 40px));
+  padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px;
+  background: var(--surface); box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  font-size: 0.75rem; white-space: normal;
+}
 .theme-toggle {
   display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px 7px 10px; border-radius: 999px;
   border: 1px solid var(--border); background: linear-gradient(180deg, var(--surface), rgba(91, 60, 196, 0.04));
