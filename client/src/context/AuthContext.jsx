@@ -12,6 +12,9 @@ export function AuthProvider({ children }) {
 
   const saveUser = (data) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    if (data?.email) {
+      localStorage.setItem('shopsphere_last_email', data.email);
+    }
     setUser(data);
   };
 

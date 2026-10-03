@@ -15,20 +15,49 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <Link to="/" className="brand">
-        Shop<span>Sphere</span>
+        <svg className="brand-logo" width="28" height="28" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#brandGrad)" />
+          <path d="M8 12L16 7L24 12V21L16 26L8 21V12Z" stroke="#FFFFFF" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"/>
+          <circle cx="16" cy="16" r="3" fill="#38BDF8"/>
+          <defs>
+            <linearGradient id="brandGrad" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#7C3AED" />
+              <stop offset="1" stopColor="#4F46E5" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>Shop</span>Sphere
       </Link>
       <nav className="nav-links">
-        <NavLink to="/">Shop</NavLink>
-        {user && <NavLink to="/cart">Cart ({totalItems})</NavLink>}
-        {user && <NavLink to="/orders">My Orders</NavLink>}
-        {isAdmin && <NavLink to="/admin/products">Admin</NavLink>}
-        {user ? (
+        {user && (
           <>
-            <span className="muted">Hi, {user.name.split(' ')[0]}</span>
-            <button className="btn btn-ghost" onClick={handleLogout}>Logout</button>
+            <NavLink to="/" end className={({ isActive }) => (isActive ? 'active' : '')}>
+              Shop
+            </NavLink>
+            <NavLink to="/cart" className={({ isActive }) => `cart-nav-link ${isActive ? 'active' : ''}`}>
+              Cart {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
+            </NavLink>
+            <NavLink to="/orders" className={({ isActive }) => (isActive ? 'active' : '')}>
+              My Orders
+            </NavLink>
           </>
+        )}
+        {isAdmin && (
+          <NavLink to="/admin/products" className={({ isActive }) => (isActive ? 'active' : '')}>
+            Admin
+          </NavLink>
+        )}
+
+        {user ? (
+          <div className="user-menu">
+            <span className="user-greeting">Hi, {user.name.split(' ')[0]}</span>
+            <button className="btn btn-ghost btn-sm" onClick={handleLogout}>Logout</button>
+          </div>
         ) : (
-          <NavLink to="/login" className="btn">Login</NavLink>
+          <div className="auth-nav-btns">
+            <NavLink to="/login" className="btn btn-ghost btn-sm">Login</NavLink>
+            <NavLink to="/register" className="btn btn-sm">Sign Up</NavLink>
+          </div>
         )}
       </nav>
     </header>
