@@ -15,8 +15,8 @@ export default function ForgotPassword() {
     setSuccess('');
 
     try {
-      await api.post('/auth/forgot-password', { email });
-      setSuccess('If an account exists, a password reset link has been sent to your email.');
+      const { data } = await api.post('/auth/forgot-password', { email });
+      setSuccess(data.message || 'If an account exists, a password reset link has been sent to your email.');
     } catch (err) {
       setError(getErrorMessage(err));
     } finally {
@@ -25,27 +25,26 @@ export default function ForgotPassword() {
   };
 
   return (
-    <section className="form-container">
-      <h2>Forgot Password</h2>
+    <form className="card form auth" onSubmit={handleSubmit}>
+      <h1>Forgot Password</h1>
+      <p className="muted" style={{ margin: '0 0 12px' }}>
+        Enter your email address to receive a password reset link.
+      </p>
       {error && <p className="error">{error}</p>}
-      {success && <p className="success" style={{ color: 'green', marginBottom: '1rem' }}>{success}</p>}
-      <form onSubmit={handleSubmit} className="card form-card">
-        <label>
-          Email
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </label>
-        <button className="btn full" disabled={loading}>
-          {loading ? 'Sending...' : 'Send Reset Link'}
-        </button>
-      </form>
-      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+      {success && <p className="success">{success}</p>}
+      <input
+        type="email"
+        required
+        placeholder="Email address"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <button className="btn full" disabled={loading}>
+        {loading ? 'Sending link...' : 'Send Reset Link'}
+      </button>
+      <p className="muted" style={{ marginTop: '1rem', textAlign: 'center' }}>
         Remembered your password? <Link to="/login">Login</Link>
       </p>
-    </section>
+    </form>
   );
 }
